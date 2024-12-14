@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      if(localStorage.getItem("playersname") === null) {
+        location.href="leaderboard.html";
+      } else {
+        
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <script src="script.js"></script>
+    <style>
+      body {
+        font-family: "Permanent Marker", cursive;
+        background-color:lightgray;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        text-align:center;
+      }
+      h1 {
+        text-align:center;
+        text-decoration:underline;
+      }
+      button {
+        background-color:blue;
+        color:white;
+        border-radius:10px;
+        width:20%;
+        text-align:center;
+        font-size:15px;
+      }
+      table {
+        width: 80%;
+        font-family: "Permanent Marker", cursive;
+        margin-top:-20px;
+        margin-left:10%;
+      }
+      th {
+        text-align:center;
+        padding: 15px;
+        font-size:25px;
+        text-decoration:underline;
+      }
+      td {
+        text-align:center;
+        padding: 15px;
+        font-size:21px;
+      }
+      
+    </style>
+    <title>Free Rider Leaders</title>
+  </head>
+  <body>
+    <h1>Free Rider Leaders:</h1>
+
+      <div class="container" id="leaders">
+        <table>
+          <thead>
+            <th>Place</th>
+            <th>Name</th>
+            <th>Score</th>
+          </thead><br>
+          <tbody id="tbody">
+          </tbody>
+        </table>
+      </div><br>
+    
+    
+
+      <div class="buttons">
+        <a href="index.html"><button id="close">Back</button></a>
+      </div>
+    <script type="module">
+            // Import the functions you need from the SDKs you need
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+            // TODO: Add SDKs for Firebase products that you want to use
+            // https://firebase.google.com/docs/web/setup#available-libraries
+
+            // Your web app's Firebase configuration
+            const firebaseConfig = {
+              apiKey: "AIzaSyDAX5sF_wwn7--4KMQZod5j_xzS-jEczcQ",
+              authDomain: "freeriderjumps.firebaseapp.com",
+              databaseURL: "https://freeriderjumps-default-rtdb.firebaseio.com",
+              projectId: "freeriderjumps",
+              storageBucket: "freeriderjumps.appspot.com",
+              messagingSenderId: "668259605978",
+              appId: "1:668259605978:web:6085631e7ad7d1335e74e3"
+            };
+
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            
+            
+            
+            import { getDatabase, ref, get, set, update, child, query, orderByChild, orderByValue, limitToLast } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+            const db = getDatabase();
+            
+            /*console.log(localStorage.getItem("bestever"));
+      
+            function UpdateData() {
+              var username = localStorage.getItem("playersname");
+              const bestscore = localStorage.getItem("bestever");
+              update(ref(db, "user/" + username), {
+                  bestscore: bestscore
+                })
+                .then(()=>{
+                  alert("data updated successfully");
+                })
+                .catch((error)=>{
+                  alert("unsuccessful, error" +error);
+                });
+            }*/
+      
+            /*document.querySelector("#swift").addEventListener("click", ()=>{
+              localStorage.clear();
+            });*/
+            function UpdateAllYourData() {
+            
+              var username = localStorage.getItem("playersname");
+              const bestscore = localStorage.getItem("bestever");
+              update(ref(db, "user/" + username), {
+                  bestscore: Number(bestscore)
+                })
+                .then(()=>{
+                  //It should work!
+                })
+                .catch((error)=>{
+                  alert("Unsuccessful, Error" +error);
+                });
+            
+            }
+      
+            
+      
+            var place = 0;
+            var tbody = document.getElementById("tbody");
+            function AddItemToTable(name, score) {
+              let trow = document.createElement("tr");
+              let td1 = document.createElement("td");
+              let td2 = document.createElement("td");
+              let td3 = document.createElement("td");
+              
+              td1.innerHTML = ++place;
+              td2.innerHTML = name;
+              td3.innerHTML = score;
+              
+              trow.appendChild(td1);
+              trow.appendChild(td2);
+              trow.appendChild(td3);
+              
+              tbody.appendChild(trow);
+            }
+      
+            function AddAllItemsToTable(TheName) {
+              TheName.reverse();
+              place=0;
+              tbody.innerHTML = "";
+              TheName.forEach(element => {
+                AddItemToTable(element.username, element.bestscore);
+              });
+            }
+            
+            function GetAllDataOnce() {
+              const dbref = query(ref(db, "user/"), orderByChild("bestscore"), limitToLast(300));
+              
+              get(dbref).then((snapshot) => {
+                var names = [];
+                
+                snapshot.forEach(childSnapshot => {
+                  names.push(childSnapshot.val());
+                });
+                AddAllItemsToTable(names);
+              });
+            }
+            
+            window.onload = GetAllDataOnce();
+            window.onload = UpdateAllYourData();
+      
+      
+            
+            var bestscore = localStorage.getItem("bestever");
+      
+            /*get(child(dbRef, "user/" + username)).then((snapshot) => {
+              if (snapshot.exists()) {
+                username = snapshot.val().username;
+                bestscore = snapshot.val().bestscore;
+                console.log(username);
+                console.log(bestscore);
+              } else {
+                console.log("No data available");
+              }
+            }).catch((error) => {
+              console.error(error);
+            });*/
+            //const topUserPostsRef = query(ref(db, 'user/' + username), orderByChild('bestscore'));
+            //console.log(topUserPostsRef);
+            //const insBtn = document.getElementById("insertdata");
+            //var firebaseRef = firebase.database().ref("users");
+          
+  </script>
+  </body>
+</html>
