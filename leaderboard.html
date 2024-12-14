@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      if(localStorage.getItem("playersname") === null) {
+        
+      } else {
+        location.href="leaders.html";
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <style>
+      body {
+        background-color:lightgray;
+        text-align:center;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+      }
+      h3 {
+        text-align:center;
+        font-family: "Permanent Marker", cursive;
+      }
+      button {
+        background-color:royalblue;
+        color:white;
+        width: 30%;
+        text-align:center;
+        justify-content:center;
+        border-radius:10px;
+      }
+      .nameplace {
+        width: 500px;
+        height: 30px;
+        font-size:30px;
+      }
+      .createaccount {
+        font-size:50px;
+        text-align:center;
+      }
+      .center {
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+      }
+      p {
+        font-size: 10px;
+        text-align:center;
+      }
+    </style>
+    
+    <title>Free Rider Leaders</title>
+  </head>
+  <body>
+    <div>
+      <h3>Enter Your Name To Get A Spot On The Leaderboard!</h3>
+      <input type="text" id="name" placeholder="Nickname, No Special Characters" class="nameplace"><br>
+      <p>(This name can't be changed)</p><br><br>
+      <button id="insertdata" class="createaccount">OK</button>
+    </div>
+        
+  <script type="module">
+            // Import the functions you need from the SDKs you need
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+            // TODO: Add SDKs for Firebase products that you want to use
+            // https://firebase.google.com/docs/web/setup#available-libraries
+
+            // Your web app's Firebase configuration
+            const firebaseConfig = {
+              apiKey: "AIzaSyDAX5sF_wwn7--4KMQZod5j_xzS-jEczcQ",
+              authDomain: "freeriderjumps.firebaseapp.com",
+              databaseURL: "https://freeriderjumps-default-rtdb.firebaseio.com",
+              projectId: "freeriderjumps",
+              storageBucket: "freeriderjumps.appspot.com",
+              messagingSenderId: "668259605978",
+              appId: "1:668259605978:web:6085631e7ad7d1335e74e3"
+            };
+
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            
+            
+            
+            import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+            const db = getDatabase();
+            
+            const username = document.getElementById("name").value;
+            const bestscore = localStorage.getItem("bestever");
+            const insBtn = document.getElementById("insertdata");
+            //var firebaseRef = firebase.database().ref("users");
+            
+            document.querySelector("#insertdata").addEventListener("click", ()=>{
+              const username = document.getElementById("name").value;
+              const bestscore = localStorage.getItem("bestever");
+              if (!username) {
+                alert("Enter a name!");
+              } else {
+                localStorage.setItem("playersname", username);
+                set(ref(db, "user/" + username), {
+                  username: username,
+                  bestscore: Number(bestscore)
+                })
+                .then(()=>{
+                  location.href = "leaders.html";
+                })
+                .catch((error)=>{
+                  alert("unsuccessful, error" +error);
+                });
+              }
+            });
+            
+            
+            /*function load() {
+              const name = localStorage.getItem("playername");
+              document.getElementById("name").value = name;
+              const bestscore = localStorage.getItem("bestever");
+              console.log(bestscore);
+            };*/
+            /*function InsertData(username, bestscore) {
+              set(ref(db, "user/"+username), {
+                username: username,
+                score: bestscore
+              })
+              .then(()=>{
+                alert("data stored!");
+              })
+              .catch((error)=>{
+                alert("unsuccessful, error" +error);
+              });
+            }
+            insBtn.addEventListener("click",InsertData);*/
+  </script>
+        
+  
+  </body>
+  
+</html>
